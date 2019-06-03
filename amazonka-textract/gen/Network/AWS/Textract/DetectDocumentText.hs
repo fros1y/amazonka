@@ -89,9 +89,9 @@ instance ToHeaders DetectDocumentText where
           = const
               (mconcat
                  ["X-Amz-Target" =#
-                    ("TextractService.DetectDocumentText" :: ByteString),
+                    ("Textract.DetectDocumentText" :: ByteString),
                   "Content-Type" =#
-                    ("application/x-amz-json-1.0" :: ByteString)])
+                    ("application/x-amz-json-1.1" :: ByteString)])
 
 instance ToJSON DetectDocumentText where
         toJSON DetectDocumentText'{..}
