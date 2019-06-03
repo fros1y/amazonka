@@ -3,12 +3,12 @@
     "metadata":{
         "apiVersion":"2019-06-03",
         "endpointPrefix":"textract",
-        "jsonVersion":"1.0",
+        "jsonVersion":"1.1",
         "protocol":"json",
         "serviceFullName":"Amazon Textract",
         "serviceId":"Textract",
         "signatureVersion":"v4",
-        "targetPrefix":"TextractService",
+        "targetPrefix":"Textract",
         "uid":"textract-2019-06-03"
     },
     "operations":{
