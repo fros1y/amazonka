@@ -217,7 +217,8 @@
             "type":"string",
             "enum":[
                 "LINE",
-                "WORD"
+                "WORD",
+                "PAGE"
             ]
         },
         "Percent":{
