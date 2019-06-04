@@ -21,6 +21,7 @@ import Network.AWS.Prelude
 
 data BlockType
   = Line
+  | Page
   | Word
   deriving (Eq, Ord, Read, Show, Enum, Bounded, Data, Typeable, Generic)
 
@@ -28,13 +29,15 @@ data BlockType
 instance FromText BlockType where
     parser = takeLowerText >>= \case
         "line" -> pure Line
+        "page" -> pure Page
         "word" -> pure Word
         e -> fromTextError $ "Failure parsing BlockType from value: '" <> e
-           <> "'. Accepted values: line, word"
+           <> "'. Accepted values: line, page, word"
 
 instance ToText BlockType where
     toText = \case
         Line -> "LINE"
+        Page -> "PAGE"
         Word -> "WORD"
 
 instance Hashable     BlockType
