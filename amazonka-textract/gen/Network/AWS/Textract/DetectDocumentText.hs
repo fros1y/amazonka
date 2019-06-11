@@ -18,10 +18,14 @@
 -- Stability   : auto-generated
 -- Portability : non-portable (GHC extensions)
 --
--- Detects text in the input document. Amazon Textract can detect lines of text and the words that make up a line of text. The input document must be an image in JPEG or PNG format. DetectDocumentText returns the detected text in an array of Block objects.
+-- Detects text in the input document. Amazon Textract can detect lines of text and the words that make up a line of text. The input document must be an image in JPG or PNG format. @DetectDocumentText@ returns the detected text in an array of 'Block' objects.
 --
 --
--- Each document page has as an associated Block of type PAGE. Each PAGE Block object is the parent of LINE Block objects that represent the lines of detected text on a page. A LINE Block object is a parent for each word that makes up the line. Words are represented by Block objects of type WORD.
+-- Each document page has as an associated @Block@ of type PAGE. Each PAGE @Block@ object is the parent of LINE @Block@ objects that represent the lines of detected text on a page. A LINE @Block@ object is a parent for each word that makes up the line. Words are represented by @Block@ objects of type WORD.
+--
+-- @DetectDocumentText@ is a synchronous operation. To analyze documents asynchronously, use 'StartDocumentTextDetection' .
+--
+-- For more information, see <https://docs.aws.amazon.com/textract/latest/dg/how-it-works-detecting.html Document Text Detection> .
 --
 module Network.AWS.Textract.DetectDocumentText
     (
@@ -57,14 +61,14 @@ newtype DetectDocumentText = DetectDocumentText'
 --
 -- Use one of the following lenses to modify other fields as desired:
 --
--- * 'ddtDocument' - The input document as base64-encoded bytes or an Amazon S3 object. If you use the AWS CLI to call Amazon Rekognition operations, you can't pass image bytes.
+-- * 'ddtDocument' - The input document as base64-encoded bytes or an Amazon S3 object. If you use the AWS CLI to call Amazon Textract operations, you can't pass image bytes. The document must be an image in JPG or PNG format. If you are using an AWS SDK to call Amazon Textract, you might not need to base64-encode image bytes passed using the @Bytes@ field.
 detectDocumentText
     :: Document -- ^ 'ddtDocument'
     -> DetectDocumentText
 detectDocumentText pDocument_ = DetectDocumentText' {_ddtDocument = pDocument_}
 
 
--- | The input document as base64-encoded bytes or an Amazon S3 object. If you use the AWS CLI to call Amazon Rekognition operations, you can't pass image bytes.
+-- | The input document as base64-encoded bytes or an Amazon S3 object. If you use the AWS CLI to call Amazon Textract operations, you can't pass image bytes. The document must be an image in JPG or PNG format. If you are using an AWS SDK to call Amazon Textract, you might not need to base64-encode image bytes passed using the @Bytes@ field.
 ddtDocument :: Lens' DetectDocumentText Document
 ddtDocument = lens _ddtDocument (\ s a -> s{_ddtDocument = a})
 
@@ -116,9 +120,9 @@ data DetectDocumentTextResponse = DetectDocumentTextResponse'
 --
 -- Use one of the following lenses to modify other fields as desired:
 --
--- * 'ddtrsDocumentMetadata' - Metadata about the document. It contains the number of pages that are detected in the document.
+-- * 'ddtrsDocumentMetadata' - Metadata about the document. Contains the number of pages that are detected in the document.
 --
--- * 'ddtrsBlocks' - An array of Block objects that contain the text that's detected in the document.
+-- * 'ddtrsBlocks' - An array of Block objects containing the text detected in the document.
 --
 -- * 'ddtrsResponseStatus' - -- | The response status code.
 detectDocumentTextResponse
@@ -132,11 +136,11 @@ detectDocumentTextResponse pResponseStatus_ =
     }
 
 
--- | Metadata about the document. It contains the number of pages that are detected in the document.
+-- | Metadata about the document. Contains the number of pages that are detected in the document.
 ddtrsDocumentMetadata :: Lens' DetectDocumentTextResponse (Maybe DocumentMetadata)
 ddtrsDocumentMetadata = lens _ddtrsDocumentMetadata (\ s a -> s{_ddtrsDocumentMetadata = a})
 
--- | An array of Block objects that contain the text that's detected in the document.
+-- | An array of Block objects containing the text detected in the document.
 ddtrsBlocks :: Lens' DetectDocumentTextResponse [Block]
 ddtrsBlocks = lens _ddtrsBlocks (\ s a -> s{_ddtrsBlocks = a}) . _Default . _Coerce
 

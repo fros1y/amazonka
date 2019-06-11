@@ -11,7 +11,7 @@
 -- Stability   : auto-generated
 -- Portability : non-portable (GHC extensions)
 --
--- This is the Amazon Textract API reference.
+-- Amazon Textract detects and analyzes text in documents and converts it into machine-readable text. This is the API reference documentation for Amazon Textract.
 --
 --
 module Network.AWS.Textract
@@ -21,6 +21,9 @@ module Network.AWS.Textract
 
     -- * Errors
     -- $errors
+
+    -- ** InvalidJobIdException
+    , _InvalidJobIdException
 
     -- ** AccessDeniedException
     , _AccessDeniedException
@@ -46,8 +49,14 @@ module Network.AWS.Textract
     -- ** InternalServerError
     , _InternalServerError
 
+    -- ** IdempotentParameterMismatchException
+    , _IdempotentParameterMismatchException
+
     -- ** DocumentTooLargeException
     , _DocumentTooLargeException
+
+    -- ** LimitExceededException
+    , _LimitExceededException
 
     -- * Waiters
     -- $waiters
@@ -58,18 +67,52 @@ module Network.AWS.Textract
     -- ** DetectDocumentText
     , module Network.AWS.Textract.DetectDocumentText
 
+    -- ** StartDocumentAnalysis
+    , module Network.AWS.Textract.StartDocumentAnalysis
+
+    -- ** AnalyzeDocument
+    , module Network.AWS.Textract.AnalyzeDocument
+
+    -- ** GetDocumentTextDetection
+    , module Network.AWS.Textract.GetDocumentTextDetection
+
+    -- ** StartDocumentTextDetection
+    , module Network.AWS.Textract.StartDocumentTextDetection
+
+    -- ** GetDocumentAnalysis
+    , module Network.AWS.Textract.GetDocumentAnalysis
+
     -- * Types
 
     -- ** BlockType
     , BlockType (..)
 
+    -- ** EntityType
+    , EntityType (..)
+
+    -- ** FeatureType
+    , FeatureType (..)
+
+    -- ** JobStatus
+    , JobStatus (..)
+
     -- ** RelationshipType
     , RelationshipType (..)
+
+    -- ** SelectionStatus
+    , SelectionStatus (..)
 
     -- ** Block
     , Block
     , block
+    , bColumnSpan
     , bText
+    , bEntityTypes
+    , bColumnIndex
+    , bPage
+    , bRowSpan
+    , bSelectionStatus
+    , bRowIndex
     , bConfidence
     , bRelationships
     , bGeometry
@@ -90,6 +133,11 @@ module Network.AWS.Textract
     , dS3Object
     , dBytes
 
+    -- ** DocumentLocation
+    , DocumentLocation
+    , documentLocation
+    , dlS3Object
+
     -- ** DocumentMetadata
     , DocumentMetadata
     , documentMetadata
@@ -100,6 +148,12 @@ module Network.AWS.Textract
     , geometry
     , gBoundingBox
     , gPolygon
+
+    -- ** NotificationChannel
+    , NotificationChannel
+    , notificationChannel
+    , ncSNSTopicARN
+    , ncRoleARN
 
     -- ** Point
     , Point
@@ -119,9 +173,20 @@ module Network.AWS.Textract
     , soBucket
     , soName
     , soVersion
+
+    -- ** Warning
+    , Warning
+    , warning
+    , wPages
+    , wErrorCode
     ) where
 
+import Network.AWS.Textract.AnalyzeDocument
 import Network.AWS.Textract.DetectDocumentText
+import Network.AWS.Textract.GetDocumentAnalysis
+import Network.AWS.Textract.GetDocumentTextDetection
+import Network.AWS.Textract.StartDocumentAnalysis
+import Network.AWS.Textract.StartDocumentTextDetection
 import Network.AWS.Textract.Types
 import Network.AWS.Textract.Waiters
 

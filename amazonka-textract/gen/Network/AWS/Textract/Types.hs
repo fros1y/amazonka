@@ -16,6 +16,7 @@ module Network.AWS.Textract.Types
       textract
 
     -- * Errors
+    , _InvalidJobIdException
     , _AccessDeniedException
     , _BadDocumentException
     , _InvalidParameterException
@@ -24,18 +25,39 @@ module Network.AWS.Textract.Types
     , _ProvisionedThroughputExceededException
     , _ThrottlingException
     , _InternalServerError
+    , _IdempotentParameterMismatchException
     , _DocumentTooLargeException
+    , _LimitExceededException
 
     -- * BlockType
     , BlockType (..)
 
+    -- * EntityType
+    , EntityType (..)
+
+    -- * FeatureType
+    , FeatureType (..)
+
+    -- * JobStatus
+    , JobStatus (..)
+
     -- * RelationshipType
     , RelationshipType (..)
+
+    -- * SelectionStatus
+    , SelectionStatus (..)
 
     -- * Block
     , Block
     , block
+    , bColumnSpan
     , bText
+    , bEntityTypes
+    , bColumnIndex
+    , bPage
+    , bRowSpan
+    , bSelectionStatus
+    , bRowIndex
     , bConfidence
     , bRelationships
     , bGeometry
@@ -56,6 +78,11 @@ module Network.AWS.Textract.Types
     , dS3Object
     , dBytes
 
+    -- * DocumentLocation
+    , DocumentLocation
+    , documentLocation
+    , dlS3Object
+
     -- * DocumentMetadata
     , DocumentMetadata
     , documentMetadata
@@ -66,6 +93,12 @@ module Network.AWS.Textract.Types
     , geometry
     , gBoundingBox
     , gPolygon
+
+    -- * NotificationChannel
+    , NotificationChannel
+    , notificationChannel
+    , ncSNSTopicARN
+    , ncRoleARN
 
     -- * Point
     , Point
@@ -85,6 +118,12 @@ module Network.AWS.Textract.Types
     , soBucket
     , soName
     , soVersion
+
+    -- * Warning
+    , Warning
+    , warning
+    , wPages
+    , wErrorCode
     ) where
 
 import Network.AWS.Lens
@@ -93,14 +132,14 @@ import Network.AWS.Sign.V4
 import Network.AWS.Textract.Types.Product
 import Network.AWS.Textract.Types.Sum
 
--- | API version @2019-06-03@ of the Amazon Textract SDK configuration.
+-- | API version @2018-06-27@ of the Amazon Textract SDK configuration.
 textract :: Service
 textract =
   Service
     { _svcAbbrev = "Textract"
     , _svcSigner = v4
     , _svcPrefix = "textract"
-    , _svcVersion = "2019-06-03"
+    , _svcVersion = "2018-06-27"
     , _svcEndpoint = defaultEndpoint textract
     , _svcTimeout = Just 70
     , _svcCheck = statusSuccess
@@ -132,21 +171,28 @@ textract =
       | otherwise = Nothing
 
 
--- | You are not authorized to perform the action.
+-- | An invalid job identifier was passed to 'GetDocumentAnalysis' or to 'GetDocumentAnalysis' .
+--
+--
+_InvalidJobIdException :: AsError a => Getting (First ServiceError) a ServiceError
+_InvalidJobIdException = _MatchServiceError textract "InvalidJobIdException"
+
+
+-- | You aren't authorized to perform the action.
 --
 --
 _AccessDeniedException :: AsError a => Getting (First ServiceError) a ServiceError
 _AccessDeniedException = _MatchServiceError textract "AccessDeniedException"
 
 
--- | Amazon Textract isn't able to read the document
+-- | Amazon Textract isn't able to read the document.
 --
 --
 _BadDocumentException :: AsError a => Getting (First ServiceError) a ServiceError
 _BadDocumentException = _MatchServiceError textract "BadDocumentException"
 
 
--- | Input parameter violated a constraint. Validate your parameter before calling the API operation again.
+-- | An input parameter violated a constraint. For example, in synchronous operations, an @InvalidParameterException@ exception occurs when neither of the @S3Object@ or @Bytes@ values are supplied in the @Document@ request parameter. Validate your parameter before calling the API operation again.
 --
 --
 _InvalidParameterException :: AsError a => Getting (First ServiceError) a ServiceError
@@ -154,7 +200,7 @@ _InvalidParameterException =
   _MatchServiceError textract "InvalidParameterException"
 
 
--- | The format of the input document isn't supported. Documents for synchronous operations can be in PNG or JPEG format. Documents for asynchronous operations can also be in PDF format.
+-- | The format of the input document isn't supported. Amazon Textract supports documents that are .png or .jpg format.
 --
 --
 _UnsupportedDocumentException :: AsError a => Getting (First ServiceError) a ServiceError
@@ -162,7 +208,7 @@ _UnsupportedDocumentException =
   _MatchServiceError textract "UnsupportedDocumentException"
 
 
--- | Amazon Rekognition is unable to access the S3 object specified in the request.
+-- | Amazon Textract is unable to access the S3 object that's specified in the request.
 --
 --
 _InvalidS3ObjectException :: AsError a => Getting (First ServiceError) a ServiceError
@@ -170,7 +216,7 @@ _InvalidS3ObjectException =
   _MatchServiceError textract "InvalidS3ObjectException"
 
 
--- | The number of requests exceeded your throughput limit. If you want to increase this limit, contact Amazon Rekognition.
+-- | The number of requests exceeded your throughput limit. If you want to increase this limit, contact Amazon Textract.
 --
 --
 _ProvisionedThroughputExceededException :: AsError a => Getting (First ServiceError) a ServiceError
@@ -178,24 +224,39 @@ _ProvisionedThroughputExceededException =
   _MatchServiceError textract "ProvisionedThroughputExceededException"
 
 
--- | Amazon Rekognition is temporarily unable to process the request. Try your call again.
+-- | Amazon Textract is temporarily unable to process the request. Try your call again.
 --
 --
 _ThrottlingException :: AsError a => Getting (First ServiceError) a ServiceError
 _ThrottlingException = _MatchServiceError textract "ThrottlingException"
 
 
--- | Amazon Rekognition experienced a service issue. Try your call again.
+-- | Amazon Textract experienced a service issue. Try your call again.
 --
 --
 _InternalServerError :: AsError a => Getting (First ServiceError) a ServiceError
 _InternalServerError = _MatchServiceError textract "InternalServerError"
 
 
--- | The document size exceeds the allowed limit. For more information, see 'limits' .
+-- | A @ClientRequestToken@ input parameter was reused with an operation, but at least one of the other input parameters is different from the previous call to the operation.
+--
+--
+_IdempotentParameterMismatchException :: AsError a => Getting (First ServiceError) a ServiceError
+_IdempotentParameterMismatchException =
+  _MatchServiceError textract "IdempotentParameterMismatchException"
+
+
+-- | The document can't be processed because it's too large. The maximum document size for synchronous operations 5 MB. The maximum document size for asynchronous operations is 500 MB for PDF format files.
 --
 --
 _DocumentTooLargeException :: AsError a => Getting (First ServiceError) a ServiceError
 _DocumentTooLargeException =
   _MatchServiceError textract "DocumentTooLargeException"
+
+
+-- | An Amazon Textract service limit was exceeded. For example, if you start too many asynchronous jobs concurrently, calls to start operations (@StartDocumentTextDetection@ , for example) raise a LimitExceededException exception (HTTP status code: 400) until the number of concurrently running jobs is below the Amazon Textract service limit.
+--
+--
+_LimitExceededException :: AsError a => Getting (First ServiceError) a ServiceError
+_LimitExceededException = _MatchServiceError textract "LimitExceededException"
 

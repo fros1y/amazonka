@@ -45,7 +45,12 @@ library
 
     exposed-modules:
           Network.AWS.Textract
+        , Network.AWS.Textract.AnalyzeDocument
         , Network.AWS.Textract.DetectDocumentText
+        , Network.AWS.Textract.GetDocumentAnalysis
+        , Network.AWS.Textract.GetDocumentTextDetection
+        , Network.AWS.Textract.StartDocumentAnalysis
+        , Network.AWS.Textract.StartDocumentTextDetection
         , Network.AWS.Textract.Types
         , Network.AWS.Textract.Waiters
 
